@@ -1,14 +1,14 @@
 package com.luna.recycler_view_demo
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.luna.recycler_view_demo.databinding.ItemBinding
 
-class MainAdapter : RecyclerView.Adapter<MainAdapter.ItemViewHolder>() {
-    private val repository: Repository = Repository()
-    private val items: List<String> = repository.getItems()
+class MainAdapter(
+    private val items: List<String>,
+    private val onItemClick: (String) -> Unit
+) : RecyclerView.Adapter<MainAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -23,12 +23,14 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.ItemViewHolder>() {
         position: Int
     ) {
         holder.textView.text = items[position]
-        Log.d("MainAdapter", items.toString())
+        holder.textView.setOnClickListener {
+            onItemClick(items[position])
+        }
     }
 
     override fun getItemCount(): Int = items.size
 
-    class ItemViewHolder(val binding: ItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemViewHolder(private val binding: ItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val textView = binding.textView
     }
 }

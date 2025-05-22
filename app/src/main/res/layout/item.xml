@@ -5,27 +5,15 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <!-- Top border -->
-<!--    <View-->
-<!--        android:id="@+id/topBorder"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="1dp"-->
-<!--        android:background="#FF808080"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
-
     <TextView
         android:id="@+id/textView"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:padding="5dp"
-
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@id/bottomBorder"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Bottom border -->
     <View
