@@ -1,10 +1,9 @@
 # Android Demo
 
 This project is a demo of using:
-
-Recycler View for efficient, smooth scrolling.
-Fragment View detailing each item with animated transitions.
-A news banner at the bottom utilizing shared flow and Gemini API to generate random news headlines.
+- **RecyclerView** for efficient, smooth scrolling of lists.
+- **Fragment View** for detailed item display, featuring animated transitions.
+- **News Banner** at the bottom, powered by SharedFlow and the Gemini API to generate random news headlines.
 
 
 ## Demo
