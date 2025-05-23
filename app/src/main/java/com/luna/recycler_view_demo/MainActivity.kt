@@ -9,13 +9,30 @@ import com.luna.recycler_view_demo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
+    private lateinit var mainAdapter: MainAdapter
+    private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        createFragment()
+        with(binding){
+            recyclerView.apply {
+                adapter = mainAdapter
+                layoutManager = LinearLayoutManager(this@MainActivity)
+            }
 
-        val mainAdapter = MainAdapter(viewModel.repositoryItems) { item ->
+            newsBanner.isSelected = true
+        }
+
+
+    }
+
+    private fun createFragment(){
+        mainAdapter = MainAdapter(viewModel.repositoryItems) { item ->
+            if(supportFragmentManager.findFragmentByTag("Details Fragment") != null) return@MainAdapter
             val fragment = DetailsFragment.newInstance(item)
             with(supportFragmentManager){
                 beginTransaction()
@@ -25,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                         R.anim.fade_in,
                         R.anim.slide_out_bottom
                     )
-                    .replace(binding.fragmentContainer.id, fragment)
+                    .replace(binding.fragmentContainer.id, fragment, "Details Fragment")
                     .addToBackStack(null)
                     .commit()
 
@@ -43,11 +60,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
-
-        binding.recyclerView.apply {
-            adapter = mainAdapter
-            layoutManager = LinearLayoutManager(this@MainActivity)
         }
     }
 
