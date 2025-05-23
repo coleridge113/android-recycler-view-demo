@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.luna.recycler_view_demo.databinding.ActivityMainBinding
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
@@ -17,47 +19,61 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        createFragment()
-        with(binding){
-            recyclerView.apply {
-                adapter = mainAdapter
-                layoutManager = LinearLayoutManager(this@MainActivity)
-            }
 
-            newsBanner.isSelected = true
+        mainAdapter = MainAdapter(viewModel.repositoryItems) { item ->
+            createFragmentView(item)
         }
-
+        setUpRecyclerView()
+        setUpNewsBannerView()
 
     }
 
-    private fun createFragment(){
-        mainAdapter = MainAdapter(viewModel.repositoryItems) { item ->
-            if(supportFragmentManager.findFragmentByTag("Details Fragment") != null) return@MainAdapter
-            val fragment = DetailsFragment.newInstance(item)
-            with(supportFragmentManager){
-                beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.slide_in_bottom,
-                        R.anim.fade_out,
-                        R.anim.fade_in,
-                        R.anim.slide_out_bottom
-                    )
-                    .replace(binding.fragmentContainer.id, fragment, "Details Fragment")
-                    .addToBackStack(null)
-                    .commit()
+    private fun createFragmentView(item: String){
+        if(supportFragmentManager.findFragmentByTag("Details Fragment") != null) return
+        val fragment = DetailsFragment.newInstance(item)
+        with(supportFragmentManager){
+            beginTransaction()
+                .setCustomAnimations(
+                    R.anim.slide_in_bottom,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.slide_out_bottom
+                )
+                .replace(binding.fragmentContainer.id, fragment, "Details Fragment")
+                .addToBackStack(null)
+                .commit()
 
-                addOnBackStackChangedListener {
-                    val isFragmentVisible = supportFragmentManager.backStackEntryCount > 0
-                    with(binding){
-                        if (isFragmentVisible) {
-                            shrinkAndFadeOut(recyclerView)
-                            fragmentContainer.visibility = View.VISIBLE
-                            textView2.text = "Fragment View Demo"
-                        } else {
-                            shrinkAndFadeIn(recyclerView)
-                            textView2.text = "Recycler View Demo"
-                        }
+            addOnBackStackChangedListener {
+                val isFragmentVisible = supportFragmentManager.backStackEntryCount > 0
+                with(binding){
+                    if (isFragmentVisible) {
+                        shrinkAndFadeOut(recyclerView)
+                        fragmentContainer.visibility = View.VISIBLE
+                        textView2.text = "Fragment View Demo"
+                    } else {
+                        shrinkAndFadeIn(recyclerView)
+                        textView2.text = "Recycler View Demo"
                     }
+                }
+            }
+        }
+    }
+
+
+    private fun setUpRecyclerView(){
+        binding.recyclerView.apply {
+            adapter = mainAdapter
+            layoutManager = LinearLayoutManager(this@MainActivity)
+        }
+    }
+
+    private fun setUpNewsBannerView(){
+        with(binding){
+            newsBanner.isSelected = true
+            lifecycleScope.launch{
+                viewModel.getNewsText()
+                viewModel.newsBannerText.collect { text ->
+                    newsBanner.text = text
                 }
             }
         }

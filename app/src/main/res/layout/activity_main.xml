@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:background="#222"
         android:textColor="#fff"
-        android:text="Breaking News: This is a scrolling news banner! Stay tuned for updates."
+        android:text="Loading news for you..."
         android:textSize="16sp"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
