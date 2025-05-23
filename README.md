@@ -1,6 +1,11 @@
-# RecyclerView Demo
+# Android Demo
 
-This project is a demo of using a RecyclerView and a Fragment view with animated transitions.
+This project is a demo of using:
+
+Recycler View for efficient, smooth scrolling.
+Fragment View detailing each item with animated transitions.
+A news banner at the bottom utilizing shared flow and Gemini API to generate random news headlines.
+
 
 ## Demo
 
