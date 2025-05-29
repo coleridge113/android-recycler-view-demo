@@ -17,14 +17,18 @@ class GeminiPromptHandler {
     suspend fun getRandomNews(): String? = withContext(Dispatchers.IO) {
         Log.d("GeminiPromptHandler", "getRandomNews called")
         val url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$geminiApiKey"
-        val prompt = "Generate a random news headline."
+//        val prompt = "Generate a random news headline with at least 10 words."
+        val prompt = "Generate news banner text directly with at least 10 words. Don't say anything else."
 
-        // Build JSON body using JSONArray/JSONObject
-        val part = JSONObject().put("text", prompt)
-        val partsArray = JSONArray().put(part)
-        val content = JSONObject().put("parts", partsArray)
-        val contentsArray = JSONArray().put(content)
-        val json = JSONObject().put("contents", contentsArray)
+        val json = JSONObject().put(
+                "contents", JSONArray().put(
+                JSONObject().put(
+                    "parts", JSONArray().put(
+                    JSONObject().put("text", prompt)
+                    )
+                )
+            )
+        )
 
         val body = json.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
@@ -41,6 +45,7 @@ class GeminiPromptHandler {
                 Log.e("GeminiPromptHandler", "Error body: ${response.body?.string()}")
                 return@withContext null
             }
+            
             val responseBody = response.body?.string() ?: return@withContext null
             val responseJson = JSONObject(responseBody)
             Log.d("GeminiPromptHandler", responseJson.toString())

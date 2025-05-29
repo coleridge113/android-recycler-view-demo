@@ -3,6 +3,7 @@ package com.luna.recycler_view_demo
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -17,10 +18,12 @@ class MainViewModel: ViewModel() {
     val newsBannerText = _newsBannerText.asSharedFlow()
 
     fun getNewsText() {
-        Log.d("MainViewModel", "getNewsText called")
         viewModelScope.launch {
-            val newsText = geminiPromptHandler.getRandomNews()
-            _newsBannerText.emit(newsText ?: "Error fetching news")
+            while(true){
+                val newsText = geminiPromptHandler.getRandomNews()
+                _newsBannerText.emit(newsText ?: "Error fetching news")
+                delay(10000L)
+            }
         }
     }
 }

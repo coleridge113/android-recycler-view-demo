@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     private fun setUpNewsBannerView(){
         with(binding){
             newsBanner.isSelected = true
-            lifecycleScope.launch{
+            lifecycleScope.launch {
                 viewModel.getNewsText()
                 viewModel.newsBannerText.collect { text ->
                     newsBanner.text = text

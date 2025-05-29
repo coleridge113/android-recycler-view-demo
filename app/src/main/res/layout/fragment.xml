@@ -13,7 +13,7 @@
         android:layout_marginTop="32dp"/>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/closeFragmentButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="top|end"
@@ -26,4 +26,12 @@
         android:minHeight="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"/>
+
+    <Button
+        android:id="@+id/intentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="INTENT BUTTON"/>
+
 </FrameLayout>
