@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.luna.recycler_view_demo.databinding.FragmentBinding
 import androidx.core.net.toUri
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
 
 class DetailsFragment: Fragment() {
 
@@ -41,6 +43,15 @@ class DetailsFragment: Fragment() {
             }
         }
 
+        val player = ExoPlayer.Builder(requireContext()).build()
+        val playerView = binding.playerView
+        playerView.player = player
+
+        val mediaItem = MediaItem.fromUri("android.resource://${requireContext().packageName}/raw/video")
+        player.setMediaItem(mediaItem)
+        player.prepare()
+        player.play()
+
         return binding.root
     }
 
@@ -53,4 +64,6 @@ class DetailsFragment: Fragment() {
             return fragment
         }
     }
+
+
 }
